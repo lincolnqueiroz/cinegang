@@ -37,6 +37,8 @@ export default function WebRTCPlayer({
       return
     }
 
+    const mediaMtxBaseUrl = mediaMtxUrl.replace(/\/$/, '')
+
     function waitForIceGathering(
       peerConnection: RTCPeerConnection,
     ) {
@@ -150,7 +152,7 @@ export default function WebRTCPlayer({
             }
 
             switch (
-              peerConnection.connectionState
+            peerConnection.connectionState
             ) {
               case 'connected':
                 setStatus('online')
@@ -185,9 +187,7 @@ export default function WebRTCPlayer({
           return
         }
 
-        const url =
-          `${mediaMtxUrl.replace(/\/$/, '')}/` +
-          `${encodeURIComponent(stream)}/whep`
+        const url = `${mediaMtxBaseUrl}/${encodeURIComponent(stream)}/whep`
 
         const response = await fetch(url, {
           method: 'POST',
