@@ -38,6 +38,7 @@ Next.js / Vercel ---> Navegador
 -   **DuckDNS** --- hostname público para o servidor de mídia
 -   **Oracle Cloud** --- VPS executando MediaMTX e Caddy
 -   **Vercel** --- hospedagem do frontend
+-   **Ably Presence** --- identificação temporária e lista de espectadores
 
 ## Fluxo da transmissão
 
@@ -107,7 +108,13 @@ Crie o arquivo `.env.local`:
 
 ``` env
 NEXT_PUBLIC_MEDIAMTX_URL=https://seu-servidor.duckdns.org
+ABLY_API_KEY=sua-chave-privada-do-ably
 ```
+
+A chave do Ably é usada somente no servidor para consultar a presença e assinar
+tokens temporários. Ela não deve usar o prefixo `NEXT_PUBLIC_` nem ser enviada ao
+navegador. O token entregue a cada viewer permite apenas presença e assinatura
+no canal da stream acessada.
 
 Execute:
 
@@ -142,6 +149,16 @@ O frontend estabelece uma sessão WHEP com:
 ``` text
 https://seu-servidor.duckdns.org/<stream>/whep
 ```
+
+Antes de carregar o player, o viewer informa um nickname entre 2 e 24
+caracteres. Não existe senha ou conta: essa identidade é temporária e vale apenas
+como identificação visual. Nicknames são únicos dentro de cada stream enquanto
+a respectiva conexão estiver presente.
+
+A lista abaixo do player é sincronizada pelo Ably Presence. Ao fechar a página,
+trocar de stream ou perder a conexão, o membro é removido automaticamente pelo
+serviço. O último nickname usado fica no `sessionStorage` da aba para preencher o
+formulário em um próximo acesso.
 
 ## Publicando pelo OBS
 
@@ -349,6 +366,8 @@ O MVP atualmente suporta:
 -   [x] Deploy na Vercel
 -   [x] MediaMTX em VPS
 -   [x] Reinicialização automática dos serviços
+-   [x] Identificação temporária de viewers por nickname
+-   [x] Lista de viewers por stream em tempo real
 -   [ ] Contas de usuário
 -   [ ] Stream keys individuais
 -   [ ] Criação de transmissões pela interface

@@ -1,9 +1,14 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-# This is NOT the Next.js you know
+## Project
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Isso é uma POC de uma plataforma de Stream de vídeo de baixa latência, usando Next.js para o front-end e MediaMTX para o controle do vídeo.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Rules
 
-<!-- END:nextjs-agent-rules -->
+- Antes de implementar uma feature, elabore e explique um plano de implementação da feature.
+- Ao concluir uma etapa do um plano de implementação execute: lint, testes e build.
+_ Caso encontre algum erro, corrija-o e execute a tarefa ao concluir uma etapa do plano de implementação.
+- Antes de inserir no plano de implementação a utilização de uma plataforma externa, como API, explique o que é a plataforma externa e se existe custo relacionado a sua utilização, e se existe outras opções, e então prossega com a esconlha dessa plataforma apenas com permissão explícita.
+- Não modifique database migrations sem permissão explícita.
+- Não instale novas dependências sem explicar o motivo de utilizá-la e sem permissão explicita.
