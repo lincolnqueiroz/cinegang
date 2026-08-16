@@ -18,9 +18,13 @@ export default function WebRTCPlayer({
   stream,
 }: WebRTCPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const mediaMtxUrl =
+    process.env.NEXT_PUBLIC_MEDIAMTX_URL
 
   const [status, setStatus] =
-    useState<PlayerStatus>('connecting')
+    useState<PlayerStatus>(
+      mediaMtxUrl ? 'connecting' : 'error',
+    )
 
   useEffect(() => {
     let pc: RTCPeerConnection | null = null
@@ -29,11 +33,7 @@ export default function WebRTCPlayer({
     let sessionUrl: string | null = null
     let disposed = false
 
-    const mediaMtxUrl =
-      process.env.NEXT_PUBLIC_MEDIAMTX_URL
-
     if (!mediaMtxUrl) {
-      setStatus('error')
       return
     }
 
@@ -253,7 +253,7 @@ export default function WebRTCPlayer({
 
       void closeConnection()
     }
-  }, [stream])
+  }, [stream, mediaMtxUrl])
 
   return (
     <div className="relative aspect-video w-full max-w-6xl overflow-hidden bg-black">
